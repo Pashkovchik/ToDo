@@ -3,11 +3,15 @@ package main
 import (
 	"ToDo"
 	"ToDo/pkg/handler"
+	"ToDo/pkg/repository"
+	"ToDo/pkg/service"
 	"log"
 )
 
 func main() {
-	handlers := new(handler.Handler)
+	repos := repository.NewRepository()
+	services := service.NewService(repos)
+	handlers := handler.NewHandler(services)
 
 	srv := new(ToDo.Server)
 	if err := srv.Run("8000", handlers.InitRoutes()); err != nil {
